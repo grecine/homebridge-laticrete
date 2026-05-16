@@ -1,0 +1,30 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac OS
+.DS_Store
+
+# Source files
+src/
+tsconfig.json
+nodemon.json
+
+# Build tools and scripts
+build-and-install.sh
+build-and-install-1.sh
+
+# IDE and Repo files
+.vscode/
+.idea/
+.github/
+.gitignore
+.eslintrc
+
+# Tests and Drafts
+wiki-drafts/
+scratch/
+TODO.md

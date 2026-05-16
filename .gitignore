@@ -1,0 +1,26 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Mac OS
+.DS_Store
+
+# Build directory
+dist/
+
+# Local tarballs
+*.tgz
+
+# IDE files
+.vscode/
+.idea/
+
+# Local build scripts
+build-and-install.sh
+build-and-install-1.sh
