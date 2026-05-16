@@ -9,15 +9,15 @@
 <br>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/npm/v/homebridge-mystrataheat?style=for-the-badge" alt="npm version"></a>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/npm/dt/homebridge-mystrataheat?style=for-the-badge" alt="npm downloads"></a>
-<a href="https://github.com/aziz66/homebridge-laticrete/stargazers"><img src="https://img.shields.io/github/stars/aziz66/homebridge-laticrete?style=for-the-badge" alt="GitHub stars"></a>
+<a href="https://github.com/grecine/homebridge-laticrete/stargazers"><img src="https://img.shields.io/github/stars/grecine/homebridge-laticrete?style=for-the-badge" alt="GitHub stars"></a>
 <br>
-<a href="https://github.com/aziz66/homebridge-laticrete/issues"><img src="https://img.shields.io/github/issues/aziz66/homebridge-laticrete?style=for-the-badge" alt="GitHub issues"></a>
-<a href="https://github.com/aziz66/homebridge-laticrete"><img src="https://img.shields.io/github/last-commit/aziz66/homebridge-laticrete?style=for-the-badge" alt="GitHub last commit"></a>
-<a href="https://github.com/aziz66/homebridge-laticrete/releases"><img src="https://img.shields.io/github/v/release/aziz66/homebridge-laticrete?style=for-the-badge" alt="GitHub release"></a>
+<a href="https://github.com/grecine/homebridge-laticrete/issues"><img src="https://img.shields.io/github/issues/grecine/homebridge-laticrete?style=for-the-badge" alt="GitHub issues"></a>
+<a href="https://github.com/grecine/homebridge-laticrete"><img src="https://img.shields.io/github/last-commit/grecine/homebridge-laticrete?style=for-the-badge" alt="GitHub last commit"></a>
+<a href="https://github.com/grecine/homebridge-laticrete/releases"><img src="https://img.shields.io/github/v/release/grecine/homebridge-laticrete?style=for-the-badge" alt="GitHub release"></a>
 <br>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/node/v/homebridge-mystrataheat?style=for-the-badge" alt="Node.js version"></a>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/npm/l/homebridge-mystrataheat?style=for-the-badge" alt="license"></a>
-<a href="https://ko-fi.com/aziz66"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
+<a href="https://ko-fi.com/grecine"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
 </p>
 
 # MyStrataHeat Homebridge Plugin
@@ -59,7 +59,7 @@ Available options include setting the polling refresh interval, adjusting the de
 
 ## Troubleshooting & Help
 
-- **Bug reports and feature requests**: [GitHub Issues](https://github.com/aziz66/homebridge-laticrete/issues)
+- **Bug reports and feature requests**: [GitHub Issues](https://github.com/grecine/homebridge-laticrete/issues)
 
 ## Changelog
 

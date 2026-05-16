@@ -1,17 +1,17 @@
 {
   "name": "homebridge-mystrataheat",
   "displayName": "Homebridge MyStrataHeat",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Homebridge plugin for Laticrete MyStrataHeat thermostats",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aziz66/homebridge-laticrete.git"
+    "url": "https://github.com/grecine/homebridge-laticrete.git"
   },
   "bugs": {
-    "url": "https://github.com/aziz66/homebridge-laticrete/issues"
+    "url": "https://github.com/grecine/homebridge-laticrete/issues"
   },
-  "homepage": "https://github.com/aziz66/homebridge-laticrete#readme",
+  "homepage": "https://github.com/grecine/homebridge-laticrete#readme",
   "main": "dist/index.js",
   "engines": {
     "node": ">=18.15.0",
@@ -40,6 +40,6 @@
   },
   "funding": {
     "type": "ko-fi",
-    "url": "https://ko-fi.com/aziz66"
+    "url": "https://ko-fi.com/grecine"
   }
 }
