@@ -1,6 +1,6 @@
 <p align="center">
 
-<img src="branding/laticrete_logo.png" width="300">
+<img src="branding/laticrete_logo.svg" width="300">
 
 </p>
 
