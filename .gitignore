@@ -24,3 +24,6 @@ dist/
 # Local build scripts
 build-and-install.sh
 build-and-install-1.sh
+
+# Scratch and Temp
+scratch/
