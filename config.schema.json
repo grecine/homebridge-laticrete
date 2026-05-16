@@ -8,20 +8,17 @@
       "name": {
         "title": "Name",
         "type": "string",
-        "required": true,
         "default": "MyStrataHeat Thermostat",
         "description": "Name of the plugin in Homebridge."
       },
       "email": {
         "title": "Email",
         "type": "string",
-        "required": true,
         "description": "Your MyStrataHeat / Warmup login email."
       },
       "password": {
         "title": "Password",
         "type": "string",
-        "required": true,
         "description": "Your MyStrataHeat / Warmup login password.",
         "x-schema-form": {
           "type": "password"
@@ -81,6 +78,7 @@
         "default": false,
         "description": "Logs historical power consumption for viewing in the Eve app."
       }
-    }
+    },
+    "required": ["name", "email", "password"]
   }
 }
