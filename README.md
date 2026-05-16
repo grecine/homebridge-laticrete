@@ -5,8 +5,6 @@
 </p>
 
 <p align="center">
-<a href="https://github.com/homebridge/homebridge/wiki/Verified-Plugins"><img src="https://img.shields.io/badge/homebridge-verified-blueviolet?color=%23491F59&style=for-the-badge&logoColor=%23FFFFFF&logo=homebridge" alt="verified-by-homebridge"></a>
-<br>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/npm/v/homebridge-mystrataheat?style=for-the-badge" alt="npm version"></a>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/npm/dt/homebridge-mystrataheat?style=for-the-badge" alt="npm downloads"></a>
 <a href="https://github.com/grecine/homebridge-laticrete/stargazers"><img src="https://img.shields.io/github/stars/grecine/homebridge-laticrete?style=for-the-badge" alt="GitHub stars"></a>
