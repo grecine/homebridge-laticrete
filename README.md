@@ -20,7 +20,7 @@
 
 # MyStrataHeat Homebridge Plugin
 
-Connects your Laticrete MyStrataHeat / Warmup Wi-Fi thermostats to Apple HomeKit through Homebridge. Uses the comprehensive Warmup API to automatically discover your devices, control heating modes, read multiple temperature probes, and log historical energy consumption natively in the Eve app.
+This is the unofficial Homebridge plugin for Laticrete MyStrataHeat and Warmup Wi-Fi thermostats. It connects your devices to Apple HomeKit, using the comprehensive Warmup API to automatically discover your thermostats, control heating modes, read multiple temperature probes, and log historical energy consumption natively in the Eve app.
 
 ## Features
 
@@ -58,6 +58,14 @@ Available options include setting the polling refresh interval, adjusting the de
 ## Troubleshooting & Help
 
 - **Bug reports and feature requests**: [GitHub Issues](https://github.com/grecine/homebridge-laticrete/issues)
+
+## Acknowledgements
+
+This plugin communicates with the Warmup cloud API, whose structure was mapped by the open-source community. Special thanks to the [ha-warmup](https://github.com/ha-warmup/warmup) project and its contributors for documenting the API, and to the earlier work by [@alyc100](https://github.com/alyc100) and [@alex0103](https://github.com/alex-0103) that got it all started.
+
+## Disclaimer
+
+This is an independent, community-driven, open-source project. It is not affiliated with, endorsed by, or supported by LATICRETE International, Inc., Warmup Plc, or any of their subsidiaries. All product names and trademarks are the property of their respective owners and are used here solely to describe the hardware this plugin connects to.
 
 ## Changelog
 
