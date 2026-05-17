@@ -54,9 +54,5 @@
     "homebridge": "^1.6.0",
     "rimraf": "^5.0.0",
     "typescript": "^5.0.0"
-  },
-  "funding": {
-    "type": "ko-fi",
-    "url": "https://ko-fi.com/grecine"
   }
 }

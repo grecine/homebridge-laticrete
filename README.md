@@ -16,7 +16,6 @@
 <br>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/node/v/homebridge-mystrataheat?style=for-the-badge" alt="Node.js version"></a>
 <a href="https://www.npmjs.com/package/homebridge-mystrataheat"><img src="https://img.shields.io/npm/l/homebridge-mystrataheat?style=for-the-badge" alt="license"></a>
-<a href="https://ko-fi.com/grecine"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
 </p>
 
 # MyStrataHeat Homebridge Plugin
