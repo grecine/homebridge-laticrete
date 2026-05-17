@@ -13,7 +13,7 @@ export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
   // this is used to track restored cached accessories
   public readonly accessories: PlatformAccessory[] = [];
 
-  public readonly mystrataheatApi: MyStrataHeatAPI;
+  public readonly mystrataheatApi!: MyStrataHeatAPI;
   public readonly eveCharacteristics: any;
   public readonly FakeGatoHistoryService: any;
 
