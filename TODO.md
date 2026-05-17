@@ -22,4 +22,4 @@ There are several background data points the thermostat uses that we could expos
 
 ## 4. Potential Code Cleanup / Refactoring
 - [x] Migrate the API calls from the current `REST` endpoints to the `GraphQL` endpoint (`https://apil.warmup.com/graphql`) if any of the above fields (like `heatingTarget`) are not present in the current REST payload.
-- [ ] Implement caching to prevent rate-limiting if multiple accessories are polling simultaneously.
+- [x] Implement caching to prevent rate-limiting if multiple accessories are polling simultaneously. (Solved architecturally by migrating to central push-based polling).
