@@ -33,6 +33,7 @@ export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
 
     if (!email || !password) {
       this.log.error('Missing email or password in configuration. Please update config.json');
+      return;
     }
 
     this.mystrataheatApi = new MyStrataHeatAPI(email, password, this.log);
