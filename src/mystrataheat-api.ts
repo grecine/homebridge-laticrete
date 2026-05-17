@@ -8,12 +8,12 @@ const APP_TOKEN = 'M=;He<Xtg"$}4N%5k{$:PD+WA"]D<;#PriteY|VTuA>_iyhs+vA"4lic{6-Lq
 const HEADERS = {
   'user-agent': 'WARMUP_APP',
   'accept-encoding': 'br, gzip, deflate',
-  'accept': '*/*',
-  'Connection': 'keep-alive',
+  accept: '*/*',
+  Connection: 'keep-alive',
   'content-type': 'application/json',
   'app-token': APP_TOKEN,
   'app-version': '1.8.1',
-  'accept-language': 'en-us'
+  'accept-language': 'en-us',
 };
 
 export class MyStrataHeatAPI {
@@ -23,7 +23,7 @@ export class MyStrataHeatAPI {
   constructor(
     private readonly email: string,
     private readonly password: string,
-    private readonly log: Logger
+    private readonly log: Logger,
   ) {}
 
   private async request(body: any) {
@@ -47,8 +47,8 @@ export class MyStrataHeatAPI {
         email: this.email,
         password: this.password,
         method: 'userLogin',
-        appId: 'WARMUP-APP-V001'
-      }
+        appId: 'WARMUP-APP-V001',
+      },
     };
 
     const res = await this.request(body);
@@ -58,15 +58,15 @@ export class MyStrataHeatAPI {
 
   async getLocations() {
     if (!this.token) throw new Error('Not logged in');
-    
+
     const body = {
       account: {
         email: this.email,
-        token: this.token
+        token: this.token,
       },
       request: {
-        method: 'getLocations'
-      }
+        method: 'getLocations',
+      },
     };
 
     const res = await this.request(body);
@@ -79,22 +79,22 @@ export class MyStrataHeatAPI {
 
   async getRooms(locId: number) {
     if (!this.token) throw new Error('Not logged in');
-    
+
     const body = {
       account: {
         email: this.email,
-        token: this.token
+        token: this.token,
       },
       request: {
         method: 'getRooms',
-        locId: locId
-      }
+        locId: locId,
+      },
     };
 
     const res = await this.request(body);
     return res.response.rooms || [];
   }
-  
+
   async getRoomStatus(roomId: number) {
     if (!this.locId) return null;
     const rooms = await this.getRooms(this.locId);
@@ -110,15 +110,15 @@ export class MyStrataHeatAPI {
     const body = {
       account: {
         email: this.email,
-        token: this.token
+        token: this.token,
       },
       request: {
         method: 'setOverride',
         rooms: [roomId],
         type: 3,
         temp: Math.round(tempCelsius * 10), // temperature is expected in 10x
-        until: until
-      }
+        until: until,
+      },
     };
 
     await this.request(body);
@@ -130,18 +130,20 @@ export class MyStrataHeatAPI {
     const body: any = {
       account: {
         email: this.email,
-        token: this.token
+        token: this.token,
       },
       request: {
         method: 'setProgramme',
         roomId: roomId,
-        roomMode: mode
-      }
+        roomMode: mode,
+      },
     };
 
     if (tempCelsius !== undefined && mode === 'fixed') {
       body.request.fixed = {
-        fixedTemp: Math.round(tempCelsius * 10).toString().padStart(3, '0')
+        fixedTemp: Math.round(tempCelsius * 10)
+          .toString()
+          .padStart(3, '0'),
       };
     }
 
@@ -166,7 +168,7 @@ export class MyStrataHeatAPI {
     const body = {
       account: {
         email: this.email,
-        token: this.token
+        token: this.token,
       },
       request: {
         method: 'setModes',
@@ -177,9 +179,9 @@ export class MyStrataHeatAPI {
           geoMode: '0',
           holTemp: '-',
           locId: this.locId,
-          locMode: 'off'
-        }
-      }
+          locMode: 'off',
+        },
+      },
     };
 
     await this.request(body);

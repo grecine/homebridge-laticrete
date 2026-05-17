@@ -1,9 +1,18 @@
-import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
+import {
+  API,
+  DynamicPlatformPlugin,
+  Logger,
+  PlatformAccessory,
+  PlatformConfig,
+  Service,
+  Characteristic,
+} from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { MyStrataHeatAccessory } from './platformAccessory';
 import { MyStrataHeatAPI } from './mystrataheat-api';
 import { addEveCharacteristics } from './eveCharacteristics';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fakegatoHistory = require('fakegato-history');
 
 export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
@@ -69,12 +78,12 @@ export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
     try {
       await this.mystrataheatApi.login();
       const locations = await this.mystrataheatApi.getLocations();
-      
+
       if (locations.length === 0) {
         this.log.warn('No locations found for this account.');
         return;
       }
-      
+
       const locId = locations[0].id;
       const rooms = await this.mystrataheatApi.getRooms(locId);
 
@@ -86,7 +95,7 @@ export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
 
         // see if an accessory with the same uuid has already been registered and restored from
         // the cached devices we stored in the `configureAccessory` method above
-        const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
+        const existingAccessory = this.accessories.find((accessory) => accessory.UUID === uuid);
 
         if (existingAccessory) {
           // the accessory already exists
@@ -99,7 +108,6 @@ export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
           // create the accessory handler for the restored accessory
           // this is imported from `platformAccessory.ts`
           new MyStrataHeatAccessory(this, existingAccessory);
-
         } else {
           // the accessory does not yet exist, so we need to create it
           this.log.info('Adding new accessory:', room.roomName);
