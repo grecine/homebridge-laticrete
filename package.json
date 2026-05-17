@@ -1,7 +1,7 @@
 {
   "name": "homebridge-mystrataheat",
   "displayName": "Homebridge MyStrataHeat",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Homebridge plugin for Laticrete MyStrataHeat thermostats",
   "license": "Apache-2.0",
   "repository": {
@@ -20,7 +20,9 @@
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "prepublishOnly": "npm run build",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "lint": "eslint src/**",
+    "format": "prettier --write src/**"
   },
   "keywords": [
     "homebridge-plugin",
@@ -51,12 +53,14 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "homebridge": "^1.6.0",
+    "prettier": "^3.8.3",
     "rimraf": "^5.0.0",
     "typescript": "^5.0.0"
-  },
-  "funding": {
-    "type": "ko-fi",
-    "url": "https://ko-fi.com/grecine"
   }
 }

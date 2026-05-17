@@ -23,6 +23,8 @@ build-and-install-1.sh
 .github/
 .gitignore
 .eslintrc
+.eslintrc.json
+.prettierrc
 
 # Tests and Drafts
 wiki-drafts/

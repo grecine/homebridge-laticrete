@@ -1,21 +1,37 @@
-import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
+import {
+  API,
+  DynamicPlatformPlugin,
+  Logger,
+  PlatformAccessory,
+  PlatformConfig,
+  Service,
+  Characteristic,
+} from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { MyStrataHeatAccessory } from './platformAccessory';
-import { MyStrataHeatAPI } from './mystrataheat-api';
+import { MyStrataHeatAPI, NormalizedRoom } from './mystrataheat-api';
 import { addEveCharacteristics } from './eveCharacteristics';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fakegatoHistory = require('fakegato-history');
 
 export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service;
   public readonly Characteristic: typeof Characteristic;
 
-  // this is used to track restored cached accessories
+  // Accessories restored from Homebridge's on-disk cache at startup.
   public readonly accessories: PlatformAccessory[] = [];
+
+  // Map from UUID → handler instance. Keyed separately from context so we
+  // never store class instances on accessory.context (which gets JSON-serialized
+  // to disk and would either lose the reference or corrupt the cache file).
+  public readonly accessoryHandlers = new Map<string, MyStrataHeatAccessory>();
 
   public readonly mystrataheatApi!: MyStrataHeatAPI;
   public readonly eveCharacteristics: any;
   public readonly FakeGatoHistoryService: any;
+
+  private pollTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     public readonly log: Logger,
@@ -38,89 +54,97 @@ export class MyStrataHeatPlatform implements DynamicPlatformPlugin {
 
     this.mystrataheatApi = new MyStrataHeatAPI(email, password, this.log);
 
-    // When this event is fired it means Homebridge has restored all cached accessories from disk.
-    // Dynamic Platform plugins should only register new accessories after this event was fired,
-    // in order to ensure they weren't added to homebridge already. This event can also be used
-    // to start discovery of new accessories.
+    // Wait for Homebridge to finish loading all cached accessories from disk
+    // before hitting the API, so we can correctly identify deltas.
     this.api.on('didFinishLaunching', () => {
       log.debug('Executed didFinishLaunching callback');
-      // run the method to discover / register your devices as accessories
       this.discoverDevices();
     });
   }
 
   /**
-   * This function is invoked when homebridge restores cached accessories from disk at startup.
-   * It should be used to setup event handlers for characteristics and update respective values.
+   * Called by Homebridge for each accessory loaded from the on-disk cache.
+   * We stash it so discoverDevices can match it against live API data.
    */
   configureAccessory(accessory: PlatformAccessory) {
     this.log.info('Loading accessory from cache:', accessory.displayName);
-
-    // add the restored accessory to the accessories cache so we can track if it has already been registered
     this.accessories.push(accessory);
   }
 
   /**
-   * This is an example method showing how to register discovered accessories.
-   * Accessories must only be registered once, previously created accessories
-   * must not be registered again to prevent "duplicate UUID" errors.
+   * Logs in, fetches all rooms from the GraphQL API, reconciles them with
+   * the cached accessories, then starts the central poll loop.
    */
   async discoverDevices() {
     try {
       await this.mystrataheatApi.login();
-      const locations = await this.mystrataheatApi.getLocations();
-      
-      if (locations.length === 0) {
-        this.log.warn('No locations found for this account.');
+      const rooms = await this.mystrataheatApi.getStatus();
+
+      if (rooms.length === 0) {
+        this.log.warn('No rooms found for this account. Keeping cached accessories visible.');
         return;
       }
-      
-      const locId = locations[0].id;
-      const rooms = await this.mystrataheatApi.getRooms(locId);
 
       for (const room of rooms) {
-        // generate a unique id for the accessory this should be generated from
-        // something globally unique, but constant, for example, the device serial
-        // number or MAC address
         const uuid = this.api.hap.uuid.generate(`mystrataheat-${room.roomId}`);
+        const existingAccessory = this.accessories.find((a) => a.UUID === uuid);
 
-        // see if an accessory with the same uuid has already been registered and restored from
-        // the cached devices we stored in the `configureAccessory` method above
-        const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
+        let targetAccessory: PlatformAccessory;
 
         if (existingAccessory) {
-          // the accessory already exists
           this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
-
-          // if you need to update the accessory.context then you should route the update here
           existingAccessory.context.device = room;
           this.api.updatePlatformAccessories([existingAccessory]);
-
-          // create the accessory handler for the restored accessory
-          // this is imported from `platformAccessory.ts`
-          new MyStrataHeatAccessory(this, existingAccessory);
-
+          targetAccessory = existingAccessory;
         } else {
-          // the accessory does not yet exist, so we need to create it
           this.log.info('Adding new accessory:', room.roomName);
-
-          // create a new accessory
-          const accessory = new this.api.platformAccessory(room.roomName, uuid);
-
-          // store a copy of the device object in the `accessory.context`
-          // the `context` property can be used to store any data about the accessory you may need
-          accessory.context.device = room;
-
-          // create the accessory handler for the newly create accessory
-          // this is imported from `platformAccessory.ts`
-          new MyStrataHeatAccessory(this, accessory);
-
-          // link the accessory to your platform
-          this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+          const newAccessory = new this.api.platformAccessory(room.roomName, uuid);
+          newAccessory.context.device = room;
+          this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [newAccessory]);
+          this.accessories.push(newAccessory);
+          targetAccessory = newAccessory;
         }
+
+        // CRITICAL: register handler for BOTH cached and new accessories.
+        // Cached accessories are the primary path on every restart after the first.
+        const handler = new MyStrataHeatAccessory(this, targetAccessory);
+        this.accessoryHandlers.set(uuid, handler);
+
+        // Push live state immediately — no 60-second wait on startup.
+        handler.updateStatusWithRoom(room);
       }
+
+      // Start the central poll loop after all handlers are registered.
+      this.startPolling();
     } catch (error) {
       this.log.error('Error discovering devices:', error);
     }
+  }
+
+  /**
+   * Starts a single shared poll loop that fetches all rooms once per interval
+   * and distributes updates to each accessory handler. This replaces the old
+   * per-accessory setInterval pattern, which fetched all rooms N times per cycle.
+   */
+  private startPolling() {
+    if (this.pollTimer) clearInterval(this.pollTimer);
+
+    const intervalMs = (this.config.refresh || 60) * 1000;
+    this.log.debug(`Starting central poll loop every ${this.config.refresh || 60}s`);
+
+    this.pollTimer = setInterval(async () => {
+      try {
+        const rooms: NormalizedRoom[] = await this.mystrataheatApi.getStatus();
+        for (const room of rooms) {
+          const uuid = this.api.hap.uuid.generate(`mystrataheat-${room.roomId}`);
+          const handler = this.accessoryHandlers.get(uuid);
+          if (handler) {
+            handler.updateStatusWithRoom(room);
+          }
+        }
+      } catch (err: any) {
+        this.log.error('Poll failed:', err.message || err);
+      }
+    }, intervalMs);
   }
 }

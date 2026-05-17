@@ -21,5 +21,5 @@ There are several background data points the thermostat uses that we could expos
 - [ ] **Safety Limits:** Expose `minTemp` and `maxTemp` as viewable characteristics so users can see the safety thresholds set on the physical device.
 
 ## 4. Potential Code Cleanup / Refactoring
-- [ ] Migrate the API calls from the current `REST` endpoints to the `GraphQL` endpoint (`https://apil.warmup.com/graphql`) if any of the above fields (like `heatingTarget`) are not present in the current REST payload.
-- [ ] Implement caching to prevent rate-limiting if multiple accessories are polling simultaneously.
+- [x] Migrate the API calls from the current `REST` endpoints to the `GraphQL` endpoint (`https://apil.warmup.com/graphql`) if any of the above fields (like `heatingTarget`) are not present in the current REST payload.
+- [x] Implement caching to prevent rate-limiting if multiple accessories are polling simultaneously. (Solved architecturally by migrating to central push-based polling).
