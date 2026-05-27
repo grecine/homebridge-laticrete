@@ -189,7 +189,14 @@ export class MyStrataHeatAccessory {
 
     // --- Push all characteristics ---
     this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, currentTempC);
-    this.service.updateCharacteristic(this.platform.Characteristic.TargetTemperature, room.targetTemp / 10);
+
+    // Clamp TargetTemperature to prevent Homebridge warnings when the device is off (reports 0)
+    const targetTempChar = this.service.getCharacteristic(this.platform.Characteristic.TargetTemperature);
+    const minTarget = (targetTempChar.props.minValue as number) ?? 5;
+    const maxTarget = (targetTempChar.props.maxValue as number) ?? 35;
+    const targetTempC = Math.max(minTarget, Math.min(maxTarget, room.targetTemp / 10));
+
+    this.service.updateCharacteristic(this.platform.Characteristic.TargetTemperature, targetTempC);
     this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeatingCoolingState, currentState);
     this.service.updateCharacteristic(
       this.platform.Characteristic.TargetHeatingCoolingState,
@@ -220,7 +227,7 @@ export class MyStrataHeatAccessory {
       this.thermoHistoryService.addEntry({
         time: now,
         currentTemp: currentTempC,
-        setTemp: room.targetTemp / 10,
+        setTemp: targetTempC,
         valvePosition: currentState === this.platform.Characteristic.CurrentHeatingCoolingState.HEAT ? 100 : 0,
       });
     }
@@ -305,7 +312,10 @@ export class MyStrataHeatAccessory {
   }
 
   handleTargetTemperatureGet(): CharacteristicValue {
-    return this.accessory.context.device.targetTemp / 10;
+    const targetTempChar = this.service.getCharacteristic(this.platform.Characteristic.TargetTemperature);
+    const minTarget = (targetTempChar.props.minValue as number) ?? 5;
+    const maxTarget = (targetTempChar.props.maxValue as number) ?? 35;
+    return Math.max(minTarget, Math.min(maxTarget, this.accessory.context.device.targetTemp / 10));
   }
 
   // ---------------------------------------------------------------------------
